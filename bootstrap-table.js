@@ -19,7 +19,7 @@
         return str;
     };
 
-    var JGrid = {
+    var TABLE = {
         // 初始化
         init: function (o) {
             return this.each(function () {
@@ -431,16 +431,16 @@
         }
     });
 
-    $.fn.jgrid = function () {
+    $.fn.table = function () {
         var method = arguments[0];
 
-        if (JGrid[method]) {
-            method = JGrid[method];
+        if (TABLE[method]) {
+            method = TABLE[method];
             arguments = Array.prototype.slice.call(arguments, 1);
         } else if (typeof (method) == 'object' || !method) {
-            method = JGrid.init;
+            method = TABLE.init;
         } else {
-            $.error('Method ' + method + ' does not exist on jQuery.jgrid');
+            $.error('Method ' + method + ' does not exist on Bootstrap-table.');
             return this;
         }
 
