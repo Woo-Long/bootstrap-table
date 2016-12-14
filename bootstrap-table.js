@@ -121,6 +121,8 @@
                         if (p.onRowClick) {
                             p.onRowClick(this);
                         }
+                        
+                        if (e.target.nodeName == "LABEL") return false;
 
                         e.stopImmediatePropagation();
                     });
@@ -236,7 +238,9 @@
                     var pageLayout = '<div class="row text-' + p.pageAlign + ' jpager">';
 
                     if (!p.scrollLoad) {
-                        pageLayout += '<div class="col-sm-10">';
+                        var colsm = p.isPageGoto ? "col-sm-10" : "col-sm-12";
+
+                        pageLayout += '<div class="' + colsm + '">';
                         pageLayout += '<div class="btn-group" role="group" aria-label="group">';
                         pageLayout += '<div class="btn-toolbar" role="toolbar" aria-label="Pager items button groups">';
                         pageLayout += '<div class="btn-group" role="group" aria-label="First prev group">';
@@ -281,10 +285,11 @@
                                     tr = document.createElement('tr');
 
                                     if (p.isMultiSelect) { // 为每行添加checkbox
+                                        var tableId = $(g).attr("id");
                                         tr = document.createElement('tr');
                                         td = document.createElement('td');
 
-                                        td.innerHTML = '<input type="checkbox" class="j-chk-item" />';
+                                        td.innerHTML = '<div class="checkbox"><input type="checkbox" class="j-chk-item" id="' + tableId + '_chk_item_' + i + '" /></div>';
                                         $(td).css('text-align', 'center');
 
                                         $(tr).html(td);
@@ -298,7 +303,7 @@
                                         $(td).css('text-align', tdalign);
 
                                         if (cm.name != "action" && cm.object == undefined) {
-                                            td.innerHTML = !o[cm.name] == null ? "" : o[cm.name];
+                                            td.innerHTML = o[cm.name] == null ? "" : o[cm.name];
                                         }
 
                                         if (cm.object) {
@@ -397,8 +402,9 @@
 
                 // 添加checkbox
                 if (p.isMultiSelect) {
+                    var tableId = $(g).attr("id");
                     th = document.createElement('th');
-                    th.innerHTML = '<input type="checkbox" class="j-chk-all" />';
+                    th.innerHTML = '<div class="checkbox"><input type="checkbox" class="j-chk-all" id="' + tableId + '_chk_all" /></div>';
                     $(th).css('text-align', 'center');
                     $(th).css('width', "20px");
                     $(tr).html(th);
