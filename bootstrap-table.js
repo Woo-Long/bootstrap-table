@@ -91,6 +91,8 @@
                 },
                 // 行单击事件
                 rowClick: function (count) {
+                    $(g).unbind("click"); // 移除click事件
+                    
                     $(g).on("click", "tbody tr", function (e) {
                         var $rowChk = $(this).find(".j-chk-item");
 
