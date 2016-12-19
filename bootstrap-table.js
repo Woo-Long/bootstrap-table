@@ -60,6 +60,7 @@
                 params: [], // 参数 “{name:"p1",value:"1"}”
                 autoload: true,
                 showHead: true, // 是否显示表头 
+                showPager: true, // 是否分页显示，非前端实现
                 isMultiSelect: false, // 是否多选，默认单选
                 emptymsg: '未找到匹配项', // 无数据结果是
                 awaitmsg: '请稍后...', // 请求时，显示的消息
@@ -356,7 +357,9 @@
                             $(g).append(content);
                         }
 
-                        option.bindPagerItem(pageIndex, data.total);
+                        if (p.showPager) {
+                            option.bindPagerItem(pageIndex, data.total);
+                        }
                     }
                 },
                 loadData: function (pageIndex) {
