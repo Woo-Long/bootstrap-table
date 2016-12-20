@@ -303,7 +303,7 @@
                                             tdalign = cm.align == undefined ? 'left' : cm.align;
 
                                         td = document.createElement('td');
-                                        $(td).css('text-align', tdalign);
+                                        $(td).css('text-align', tdalign).addClass(cm.className);
 
                                         if (cm.name != "action" && cm.object == undefined) {
                                             td.innerHTML = o[cm.name] == null ? "" : o[cm.name];
@@ -430,6 +430,9 @@
                     }
                     if (cm.width) {
                         $(th).css('width', cm.width + "px");
+                    }
+                    if (cm.className) {
+                        $(th).addClass(cm.className);
                     }
 
                     $(tr).append(th);
