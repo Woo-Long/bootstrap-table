@@ -10,7 +10,6 @@
 * {"status":true,"content":[],"total":0,"message":"加载动态成功"}
 * ===================================================================================
 */
-
 (function ($) {
 
     String.format = function () {
@@ -61,8 +60,9 @@
                 autoload: true,
                 showHead: true, // 是否显示表头 
                 showPager: true, // 是否分页显示，非前端实现
+                groupHead: [], // 分组显示的头信息
                 isMultiSelect: false, // 是否多选，默认单选
-                emptymsg: '未找到匹配项', // 无数据结果是
+                emptymsg: '', // 无数据结果是
                 awaitmsg: '请稍后...', // 请求时，显示的消息
                 pageAlign: 'center', // 分页水平显示位置。left、center（默认）、right
                 isPageGoto: true, // 是否显示分页跳转
@@ -93,7 +93,7 @@
                 // 行单击事件
                 rowClick: function (count) {
                     $(g).unbind("click"); // 移除click事件
-                    
+
                     $(g).on("click", "tbody tr", function (e) {
                         var $rowChk = $(this).find(".j-chk-item");
 
@@ -124,7 +124,7 @@
                         if (p.onRowClick) {
                             p.onRowClick(this);
                         }
-                        
+
                         if (e.target.nodeName == "LABEL") return false;
 
                         e.stopImmediatePropagation();
@@ -283,7 +283,7 @@
                                 tr = "",
                                 td = "";
 
-                            if (data.status && data.content) {
+                            if (data.status && data.content.length) {
                                 $.each(data.content, function (i, o) {
                                     tr = document.createElement('tr');
 
@@ -300,10 +300,11 @@
 
                                     for (var c = 0; c < p.colModel.length; c++) {
                                         var cm = p.colModel[c],
-                                            tdalign = cm.align == undefined ? 'left' : cm.align;
+                                            tdalign = cm.align == undefined ? 'left' : cm.align,
+                                            tdwidth = !cm.width ? 'auto' : cm.width + 'px';
 
                                         td = document.createElement('td');
-                                        $(td).css('text-align', tdalign).addClass(cm.className);
+                                        $(td).css({ 'text-align': tdalign, 'width': tdwidth }).addClass(cm.className);
 
                                         if (cm.name != "action" && cm.object == undefined) {
                                             td.innerHTML = o[cm.name] == null ? "" : o[cm.name];
@@ -328,7 +329,7 @@
                                 tr = document.createElement('tr'),
                                 td = document.createElement('td');
 
-                                td.innerHTML = !(data.message) ? p.emptymsg : data.message;
+                                td.innerHTML = p.emptymsg ? p.emptymsg : data.message;
                                 td.colSpan = p.isMultiSelect ? (p.colModel.length + 1) : p.colModel.length;
                                 td.className = "text-center";
 
@@ -456,7 +457,7 @@
         } else if (typeof (method) == 'object' || !method) {
             method = TABLE.init;
         } else {
-            $.error('Method ' + method + ' does not exist on Bootstrap-table.');
+            $.error('Method ' + method + ' does not exist on jQuery.jgrid');
             return this;
         }
 
