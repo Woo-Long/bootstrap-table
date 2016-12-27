@@ -418,25 +418,28 @@
 
                 for (var i = 0; i < p.colModel.length; i++) {
                     var cm = p.colModel[i];
-                    th = document.createElement('th');
+                    
+                    if(cm!=undefined){
+                        th = document.createElement('th');
 
-                    if (cm.display != undefined) {
-                        th.innerHTML = cm.display;
-                    }
-                    if (cm.name) {
-                        $(th).attr("field", cm.name);
-                    }
-                    if (cm.align) {
-                        $(th).css('text-align', cm.align);
-                    }
-                    if (cm.width) {
-                        $(th).css('width', cm.width + "px");
-                    }
-                    if (cm.className) {
-                        $(th).addClass(cm.className);
-                    }
+                        if (cm.display != undefined) {
+                            th.innerHTML = cm.display;
+                        }
+                        if (cm.name) {
+                            $(th).attr("field", cm.name);
+                        }
+                        if (cm.align) {
+                            $(th).css('text-align', cm.align);
+                        }
+                        if (cm.width) {
+                            $(th).css('width', cm.width + "px");
+                        }
+                        if (cm.className) {
+                            $(th).addClass(cm.className);
+                        }
 
-                    $(tr).append(th);
+                        $(tr).append(th);
+                    }
                 }
                 $(thead).append(tr);
                 $(g).html(thead);
@@ -457,7 +460,7 @@
         } else if (typeof (method) == 'object' || !method) {
             method = TABLE.init;
         } else {
-            $.error('Method ' + method + ' does not exist on jQuery.jgrid');
+            $.error('Method ' + method + ' does not exist on jQuery.table');
             return this;
         }
 
