@@ -56,6 +56,7 @@
                 colModel: [],
                 pageIndex: 1,
                 pageCount: 10,
+                pageNumber: [10, 20, 30, 40, 50],
                 params: [], // 参数 “{name:"p1",value:"1"}”
                 autoload: true,
                 showHead: true, // 是否显示表头 
@@ -186,11 +187,25 @@
                             isSelected = i == pageIndex ? 'selected="selected"' : '';
                             opItem += '<option value="' + i + '" ' + isSelected + '>' + i + '</option>';
                         }
-                        $jpager.find(".page-index-box").html(opItem);
+                        
+                        $jpager.find(".page-index-box").html(opItem)
+                            .on("change", function () {
+                                option.gotopager($(this).val());
+                            });
 
-                        $jpager.find(".page-index-box").on("change", function () {
-                            option.gotopager($(this).val());
-                        });
+                        // 每页条数
+                        opItem = "";
+                        isSelected = "";
+                        for (var i = 0; i < p.pageNumber.length; i++) {
+                            isSelected = p.pageCount == p.pageNumber[i] ? 'selected="selected"' : '';
+                            opItem += '<option value="' + p.pageNumber[i] + '" ' + isSelected + '>' + p.pageNumber[i] + '</option>';
+                        }
+
+                        $jpager.find(".page-count-box").html(opItem)
+                            .on("change", function () {
+                                p.pageCount = $(this).val();
+                                option.gotopager(1);
+                            });
 
                         if (pageIndex <= 1) {
                             $jpager.find(".firstbtn, .prevbtn").addClass("disabled");
@@ -241,34 +256,35 @@
                     var pageLayout = '<div class="row text-' + p.pageAlign + ' jpager">';
 
                     if (!p.scrollLoad) {
-                        var colsm = p.isPageGoto ? "col-sm-10" : "col-sm-12";
+                        pageLayout += '<div class="col-sm-3 text-left"><div class="input-group"><span class="input-group-addon">共<span class="page-total"></span>条 / 共<span class="page-count"></span>页，每页</span>';
+                        pageLayout += '<select class="form-control input-sm page-count-box">';
+                        pageLayout += '</select><span class="input-group-addon">条</span></div></div>';
 
-                        pageLayout += '<div class="' + colsm + '">';
-                        pageLayout += '<div class="btn-group" role="group" aria-label="group">';
-                        pageLayout += '<div class="btn-toolbar" role="toolbar" aria-label="Pager items button groups">';
-                        pageLayout += '<div class="btn-group" role="group" aria-label="First prev group">';
-                        pageLayout += '<a class="btn btn-sm btn-default firstbtn"><i class="glyphicon glyphicon-fast-backward"></i></a>';
-                        pageLayout += '<a class="btn btn-sm btn-default prevbtn"><i class="glyphicon glyphicon-backward"></i></a>';
-                        pageLayout += '</div>';
-                        pageLayout += '<div class="btn-group btngroup" role="group" aria-label="Numeric pager items group"></div>';
-                        pageLayout += '<div class="btn-group" role="group" aria-label="Last next group">';
-                        pageLayout += '<a class="btn btn-sm btn-default nextbtn"><i class="glyphicon glyphicon-forward"></i></a>';
-                        pageLayout += '<a class="btn btn-sm btn-default lastbtn"><i class="glyphicon glyphicon-fast-forward"></i></a>';
-                        pageLayout += '</div>';
-                        pageLayout += '</div>';
-                        pageLayout += '</div>';
+                        pageLayout += '<div class="col-sm-7">';
+                        pageLayout += ' <div class="btn-group" role="group" aria-label="group">';
+                        pageLayout += '     <div class="btn-toolbar" role="toolbar" aria-label="Pager items button groups">';
+                        pageLayout += '         <div class="btn-group" role="group" aria-label="First prev group">';
+                        pageLayout += '             <a class="btn btn-sm btn-default firstbtn"><i class="glyphicon glyphicon-fast-backward"></i></a>';
+                        pageLayout += '             <a class="btn btn-sm btn-default prevbtn"><i class="glyphicon glyphicon-backward"></i></a>';
+                        pageLayout += '         </div>';
+                        pageLayout += '         <div class="btn-group btngroup" role="group" aria-label="Numeric pager items group"></div>';
+                        pageLayout += '         <div class="btn-group" role="group" aria-label="Last next group">';
+                        pageLayout += '             <a class="btn btn-sm btn-default nextbtn"><i class="glyphicon glyphicon-forward"></i></a>';
+                        pageLayout += '             <a class="btn btn-sm btn-default lastbtn"><i class="glyphicon glyphicon-fast-forward"></i></a>';
+                        pageLayout += '         </div>';
+                        pageLayout += '     </div>';
+                        pageLayout += ' </div>';
                         pageLayout += '</div>';
 
                         if (p.isPageGoto) {
                             pageLayout += '<div class="col-sm-2">';
-                            pageLayout += '<div class="input-group">';
-                            pageLayout += '<span class="input-group-addon">转到第</span>';
-                            pageLayout += '<select class="form-control input-sm page-index-box"></select>';
-                            pageLayout += '<span class="input-group-addon">页</span>';
+                            pageLayout += ' <div class="input-group">';
+                            pageLayout += '     <span class="input-group-addon">转到第</span>';
+                            pageLayout += '     <select class="form-control input-sm page-index-box"></select>';
+                            pageLayout += '     <span class="input-group-addon">页</span>';
+                            pageLayout += ' </div>';
                             pageLayout += '</div>';
                         }
-
-                        pageLayout += '</div>';
                     }
 
                     pageLayout += '</div>';
